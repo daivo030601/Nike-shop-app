@@ -9,36 +9,58 @@ namespace ShopAPI.Models
 
         }
 
-        public DbSet<Product> Products { get; set;}
+        public DbSet<Product> products { get; set;}
         public DbSet<Collection> collections { get; set;}
         public DbSet<Coupon> coupons { get; set;}
         public DbSet<Color> colors { get; set;}
         public DbSet<Size> sizes { get; set; }
+        public DbSet<Address> addresses { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Recipe> recipes { get; set; }
+        public DbSet<RecipeItem> recipeItems { get; set; }
+        public DbSet<User> users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Product>().HasKey(x => x.Id);
-            modelBuilder.Entity<Collection>().HasKey(x => x.Id);
-            modelBuilder.Entity<Coupon>().HasKey(x => x.Id);
+            modelBuilder.Entity<Product>().HasKey(x => x.ProductId);
+            modelBuilder.Entity<Collection>().HasKey(x => x.CollectionId);
+            modelBuilder.Entity<Coupon>().HasKey(x => x.CouponId);
             modelBuilder.Entity<Color>().HasKey(x => x.ColorId);
             modelBuilder.Entity<Size>().HasKey(x => x.SizeId);
+            modelBuilder.Entity<Address>().HasKey(x => x.AddressId);
+            modelBuilder.Entity<User>().HasKey(x => x.UserId);
+            modelBuilder.Entity<Recipe>().HasKey(x => x.RecipeId);
+            modelBuilder.Entity<RecipeItem>().HasKey(x => x.RecipeItemId);
+            modelBuilder.Entity<Category>().HasKey(x => x.CategoryId);
 
             modelBuilder.Entity<Product>(e =>
             {
                 e.Property(en => en.Name).IsRequired();
                 e.Property(en => en.Price).IsRequired();
                 e.Property(en => en.Picture).IsRequired();
-                e.Property(en => en.variety).IsRequired();
-                e.Property(en => en.Sizes).IsRequired();
-                e.Property(en => en.Category).IsRequired();
-                e.Property(en => en.Colors).IsRequired();
+                e.Property(en => en.Variety).IsRequired();
             });
 
             modelBuilder.Entity<Collection>(e =>
             {
                 e.Property(en => en.Picture).IsRequired();
                 e.Property(en => en.Name).IsRequired();
+            });
+
+            modelBuilder.Entity<Color>(e =>
+            {
+                e.Property(en => en.ColorName).IsRequired();
+            });
+
+            modelBuilder.Entity<Size>(e =>
+            {
+                e.Property(en => en.SizeName).IsRequired();
+            });
+
+            modelBuilder.Entity<Recipe>(e =>
+            {
+                e.Property(en => en.RecipeDate).IsRequired();
             });
 
             modelBuilder.Entity<Coupon>(e =>
@@ -49,17 +71,54 @@ namespace ShopAPI.Models
                 e.Property(en => en.Exp).IsRequired();
             });
 
-            
-
             modelBuilder.Entity<Product>()
-                .HasOne(q => q.Collection)
-                .WithMany(f => f.Products)
+                .HasOne(product => product.Category)
+                .WithMany(category => category.Products)
+                .HasForeignKey(product => product.CategoryId)
                 .IsRequired();
 
             modelBuilder.Entity<Product>()
-                .HasMany(q => q.Sizes)
-                .WithOne(f => f.Product)
+                .HasOne(product => product.Collection)
+                .WithMany(collection => collection.Products)
+                .HasForeignKey(product => product.CollectionId)
                 .IsRequired();
+
+            modelBuilder.Entity<Color>()
+                .HasMany(color => color.Products)
+                .WithMany(product => product.Colors)
+                .UsingEntity(j => j.ToTable("ColorProducts"));
+
+            modelBuilder.Entity<Size>()
+                .HasMany(size => size.Products)
+                .WithMany(product => product.Sizes)
+                .UsingEntity(j => j.ToTable("SizeProducts"));
+
+            modelBuilder.Entity<Address>()
+                .HasOne(address => address.User)
+                .WithMany(user => user.Addresses)
+                .HasForeignKey(address => address.UserId);
+
+            modelBuilder.Entity<Recipe>()
+                .HasOne(recipe => recipe.User)
+                .WithMany(user => user.Recipes)
+                .HasForeignKey(recipe => recipe.UserId);
+
+            modelBuilder.Entity<Recipe>()
+                .HasOne(recipe => recipe.Coupon)
+                .WithMany(coupon => coupon.Recipes)
+                .HasForeignKey(recipe => recipe.UserId);
+
+            modelBuilder.Entity<RecipeItem>()
+                .HasOne(recipeItem => recipeItem.Product)
+                .WithMany(product => product.RecipeItems)
+                .HasForeignKey(recipe => recipe.ProductId)
+                .IsRequired();
+
+            modelBuilder.Entity<RecipeItem>()
+               .HasOne(recipeItem => recipeItem.Recipe)
+               .WithMany(recipe => recipe.RecipeItems)
+               .HasForeignKey(recipeItem => recipeItem.RecipeId)
+               .IsRequired();
 
 
         }

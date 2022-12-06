@@ -16,12 +16,12 @@ namespace ShopAPI.Controllers
             this._dataContext = dataContext;
         }
         // GET: api/<ProductController>
-        [HttpGet]
+        /*[HttpGet]
         [Route("api/[controller]/Products")]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
             return Ok(_dataContext.Products.ToList());
-        }
+        }*/
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
