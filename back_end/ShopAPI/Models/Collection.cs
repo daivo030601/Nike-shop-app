@@ -7,8 +7,8 @@ namespace ShopAPI.Models
     public class Collection
     {
         public int CollectionId { get; set; }
-        public byte[] Picture { get; set; }
+        public byte[] Picture { get; set; } = null;
         public virtual List<Product> Products { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = null;
     }
 }

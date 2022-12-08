@@ -34,18 +34,34 @@ namespace ShopAPI.Models
             modelBuilder.Entity<RecipeItem>().HasKey(x => x.RecipeItemId);
             modelBuilder.Entity<Category>().HasKey(x => x.CategoryId);
 
+            modelBuilder.Entity<Address>(e =>
+            {
+                e.Property(en => en.UserName).IsRequired(false);
+                e.Property(en => en.Pin).IsRequired(false);
+                e.Property(en => en.District).IsRequired(false);
+                e.Property(en => en.City).IsRequired(false);
+
+            });
+
             modelBuilder.Entity<Product>(e =>
             {
-                e.Property(en => en.Name).IsRequired();
-                e.Property(en => en.Price).IsRequired();
-                e.Property(en => en.Picture).IsRequired();
-                e.Property(en => en.Variety).IsRequired();
+                e.Property(en => en.Name).IsRequired(false);
+                e.Property(en => en.Variety).IsRequired(false);
+                e.Property(en => en.Picture).IsRequired(false);
+                e.Property(en => en.Description).IsRequired(false);
             });
 
             modelBuilder.Entity<Collection>(e =>
             {
-                e.Property(en => en.Picture).IsRequired();
-                e.Property(en => en.Name).IsRequired();
+                e.Property(en => en.Name).IsRequired(false);
+                e.Property(en => en.Picture).IsRequired(false);
+            });
+
+            modelBuilder.Entity<Category>(e =>
+            {
+                e.Property(en => en.Picture).IsRequired(false);
+                e.Property(en => en.Description).IsRequired(false);
+                e.Property(en => en.Name).IsRequired(false);
             });
 
             modelBuilder.Entity<Color>(e =>
@@ -65,10 +81,7 @@ namespace ShopAPI.Models
 
             modelBuilder.Entity<Coupon>(e =>
             {
-                e.Property(en => en.Cost).IsRequired();
-                e.Property(en => en.Name).IsRequired();
-                e.Property(en => en.Cost).IsRequired();
-                e.Property(en => en.Exp).IsRequired();
+                e.Property(en => en.Name).IsRequired(false);
             });
 
             modelBuilder.Entity<Product>()
