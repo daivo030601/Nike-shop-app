@@ -6,12 +6,12 @@ namespace ShopAPI.Models
     public class Address
     {
         public int AddressId { get; set; }
-        public string Name { get; set; }
-        public string City { get; set; }
-        public string District { get; set; }
-        public string AddressName { get; set; }
-        public string Phone { get; set; }
-        public string Pin{ get; set; }
+        public string UserName { get; set; } = null;
+        public string City { get; set; } = null;
+        public string District { get; set; } = null;
+        public string AddressName { get; set; } = null;
+        public string Phone { get; set; } = null;
+        public string Pin{ get; set; } = null;
 
         public int? UserId { get; set; }
         public User User { get; set; }

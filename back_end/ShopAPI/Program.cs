@@ -1,11 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
+using ShopAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ShoeShopApiConnectionString")));
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllers();
+
+//ADD dependency injection
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

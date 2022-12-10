@@ -9,7 +9,7 @@ namespace ShopAPI.Models
         public int RecipeId { get; set; }
         public int UserId { get; set;}
         public int RecipeItemId { get; set; }
-        public int CouponId { get; set; }
+        public int CouponId { get; set; } = 0;
         public float Total { get; set; }
         public DateTime RecipeDate { get; set; }
 
