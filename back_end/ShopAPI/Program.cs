@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 //ADD dependency injection
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 
 
 builder.Services.AddEndpointsApiExplorer();
