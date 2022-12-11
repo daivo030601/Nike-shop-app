@@ -9,6 +9,7 @@ namespace ShopAPI.Helper
         public ApplicationMapper() {
             CreateMap<Category, CategoryModel>().ReverseMap();
             CreateMap<Collection, CollectionModel>().ReverseMap();
+            CreateMap<Address, AddressModel>().ReverseMap();
         }
     }
 }
