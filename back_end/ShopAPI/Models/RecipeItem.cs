@@ -6,10 +6,10 @@ namespace ShopAPI.Models
 
     public class RecipeItem
     {
-        public int RecipeItemId { get; set; }
         public int RecipeId { get; set; }
         public int Quatity { get; set; }
         public int ProductId { get; set; }
+        public float Total { get; set; }
 
         public Product Product { get; set; }
         public Recipe Recipe { get; set; }

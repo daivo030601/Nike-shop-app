@@ -20,6 +20,10 @@
                     response.Code = "0";
                     response.Message = "Success";
                     break;
+                case ResponseType.AlreadyExist:
+                    response.Code = "3";
+                    response.Message = "object already exist";
+                    break;
                 case ResponseType.NotFound:
                     response.Code = "2";
                     response.Message = "No object available";

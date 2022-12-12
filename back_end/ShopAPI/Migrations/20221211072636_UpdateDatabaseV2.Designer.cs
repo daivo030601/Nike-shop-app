@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopAPI.Models;
 
@@ -11,9 +12,10 @@ using ShopAPI.Models;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221211072636_UpdateDatabaseV2")]
+    partial class UpdateDatabaseV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,10 +112,6 @@ namespace ShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ColorId"), 1L, 1);
 
-                    b.Property<string>("ColorCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ColorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -195,7 +193,7 @@ namespace ShopAPI.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Quatity")
                         .HasColumnType("int");
 
                     b.Property<string>("Variety")
@@ -224,8 +222,8 @@ namespace ShopAPI.Migrations
                     b.Property<DateTime>("RecipeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RecipeItemId")
-                        .HasColumnType("int");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -239,8 +237,11 @@ namespace ShopAPI.Migrations
 
             modelBuilder.Entity("ShopAPI.Models.RecipeItem", b =>
                 {
-                    b.Property<int>("RecipeId")
+                    b.Property<int>("RecipeItemId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeItemId"), 1L, 1);
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -248,12 +249,14 @@ namespace ShopAPI.Migrations
                     b.Property<int>("Quatity")
                         .HasColumnType("int");
 
-                    b.Property<float>("Total")
-                        .HasColumnType("real");
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
 
-                    b.HasKey("RecipeId", "ProductId");
+                    b.HasKey("RecipeItemId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("recipeItem");
                 });

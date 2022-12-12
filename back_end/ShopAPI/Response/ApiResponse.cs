@@ -12,6 +12,7 @@
     {
         Success,
         NotFound,
+        AlreadyExist,
         Failure
     }
 }

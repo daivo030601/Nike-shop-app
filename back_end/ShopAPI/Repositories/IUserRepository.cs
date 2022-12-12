@@ -7,7 +7,7 @@ namespace ShopAPI.Repositories
         Task<int> InsertUser(UserModel userModel);
         Task<List<UserModel>> GetUsers();
         Task<UserModel> GetUserById(int Id);
-        Task<int> DeleteUser(int Id);
+        Task DeleteUser(int Id);
         Task<int> UpdateUser(UserModel userModel);
     }
 }

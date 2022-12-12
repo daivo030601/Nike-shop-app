@@ -10,6 +10,9 @@ namespace ShopAPI.Helper
             CreateMap<Category, CategoryModel>().ReverseMap();
             CreateMap<Collection, CollectionModel>().ReverseMap();
             CreateMap<Address, AddressModel>().ReverseMap();
+            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<Product, ProductModel>().ReverseMap();
+            CreateMap<Product, DetailProductModel>().ReverseMap();
         }
     }
 }

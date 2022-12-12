@@ -15,16 +15,14 @@ namespace ShopAPI.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task<int> DeleteUser(int Id)
+        public async Task DeleteUser(int Id)
         {
             var user = await _context.users.Where(u => u.UserId.Equals(Id)).FirstOrDefaultAsync();
             if (user != null)
             {
                 _context.users.Remove(user);
                 await _context.SaveChangesAsync();
-                return user.UserId;
             }
-            return Id;
         }
 
         public async Task<UserModel> GetUserById(int Id)
@@ -42,12 +40,12 @@ namespace ShopAPI.Repositories
         public async Task<int> InsertUser(UserModel userModel)
         {
             var checkUser = _context.users.Where(u => u.Username.Equals(userModel.Username)).FirstOrDefaultAsync();
-            if (checkUser == null)
+            if (checkUser.Result == null)
             {
                 var newUser = _mapper.Map<User>(userModel);
                 await _context.users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                return newUser.UserId;
+                return 1;
             }
             return 0;
         }
