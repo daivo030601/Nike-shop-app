@@ -7,6 +7,6 @@ namespace ShopAPI.Models
     {
         public int SizeId { get; set; }
         public string SizeName { get; set; } = null;
-        public ICollection<Product> Products { get; set; }
+        public ICollection<SizeProduct> SizeProducts { get; set; }
     }
 }

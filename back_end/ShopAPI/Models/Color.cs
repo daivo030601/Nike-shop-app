@@ -7,6 +7,7 @@ namespace ShopAPI.Models
     {
         public int ColorId { get; set; }
         public string ColorName { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public string ColorCode { get; set; }
+        public ICollection<ColorProduct> ColorProducts { get; set; }
     }
 }

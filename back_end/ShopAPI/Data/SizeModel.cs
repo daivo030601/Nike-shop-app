@@ -2,7 +2,7 @@
 {
     public class SizeModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int SizeId { get; set; }
+        public string SizeName { get; set; }
     }
 }

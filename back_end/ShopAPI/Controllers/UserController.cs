@@ -1,31 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ShopAPI.Data;
-using ShopAPI.Models;
 using ShopAPI.Repositories;
 using ShopAPI.Response;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ShopAPI.Controllers
 {
     [ApiController]
-    public class ProductController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IProductRepository _productRepo;
+        private readonly IUserRepository _userRepo;
 
-        public ProductController(IProductRepository repo)
+        public UserController(IUserRepository repo)
         {
-            _productRepo = repo;
+            _userRepo = repo;
         }
 
         [HttpGet]
-        [Route("api/[controller]/Products")]
-        public async Task<IActionResult> GetAllProducts()
+        [Route("api/[controller]/Users")]
+        public async Task<IActionResult> GetAllUsers()
         {
             ResponseType type = ResponseType.Success;
             try
             {
-                List<ProductModel> data = await _productRepo.GetProducts();
+                List<UserModel> data = await _userRepo.GetUsers();
                 if (data == null)
                 {
                     type = ResponseType.NotFound;
@@ -39,13 +37,13 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/Products/{Id}")]
-        public async Task<IActionResult> GetProductById(int Id)
+        [Route("api/[controller]/User/{Id}")]
+        public async Task<IActionResult> GetUserById(int Id)
         {
             ResponseType type = ResponseType.Success;
             try
             {
-                DetailProductModel data = await _productRepo.GetProductById(Id);
+                UserModel data = await _userRepo.GetUserById(Id);
                 if (data == null)
                 {
                     type = ResponseType.NotFound;
@@ -59,17 +57,16 @@ namespace ShopAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/[controller]/Product")]
-        public async Task<IActionResult> AddProduct(ProductModel model)
+        [Route("api/[controller]/User")]
+        public async Task<IActionResult> AddUser(UserModel model)
         {
             try
             {
-                ResponseType type = ResponseType.Success;
-                var result = await _productRepo.InsertProduct(model);
-                if (result == 1)
-                    return Ok(ResponseHandler.GetApiResponse(ResponseType.Success, model?.Name));
+                var result = await _userRepo.InsertUser(model);
+                if(result == 1)
+                    return Ok(ResponseHandler.GetApiResponse(ResponseType.Success, model.Username));
                 else
-                    return BadRequest(ResponseHandler.GetApiResponse(ResponseType.AlreadyExist, model?.Name));
+                    return BadRequest(ResponseHandler.GetApiResponse(ResponseType.AlreadyExist, model.Username));
             }
             catch (Exception e)
             {

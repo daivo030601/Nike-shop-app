@@ -19,6 +19,8 @@ namespace ShopAPI.Models
         public DbSet<Recipe> recipes { get; set; }
         public DbSet<RecipeItem> recipeItems { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<ColorProduct> colorProducts { get; set; }
+        public DbSet<SizeProduct> sizeProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,7 +33,6 @@ namespace ShopAPI.Models
             modelBuilder.Entity<Address>().HasKey(x => x.AddressId);
             modelBuilder.Entity<User>().HasKey(x => x.UserId);
             modelBuilder.Entity<Recipe>().HasKey(x => x.RecipeId);
-            modelBuilder.Entity<RecipeItem>().HasKey(x => x.RecipeItemId);
             modelBuilder.Entity<Category>().HasKey(x => x.CategoryId);
 
             modelBuilder.Entity<Address>(e =>
@@ -96,15 +97,10 @@ namespace ShopAPI.Models
                 .HasForeignKey(product => product.CollectionId)
                 .IsRequired();
 
-            modelBuilder.Entity<Color>()
-                .HasMany(color => color.Products)
-                .WithMany(product => product.Colors)
-                .UsingEntity(j => j.ToTable("ColorProducts"));
+            modelBuilder.Entity<ColorProduct>().HasKey(sc => new { sc.ColorId, sc.ProductId });
 
-            modelBuilder.Entity<Size>()
-                .HasMany(size => size.Products)
-                .WithMany(product => product.Sizes)
-                .UsingEntity(j => j.ToTable("SizeProducts"));
+            modelBuilder.Entity<SizeProduct>().HasKey(sc => new { sc.SizeId, sc.ProductId });
+
 
             modelBuilder.Entity<Address>()
                 .HasOne(address => address.User)
@@ -121,19 +117,8 @@ namespace ShopAPI.Models
                 .WithMany(coupon => coupon.Recipes)
                 .HasForeignKey(recipe => recipe.UserId);
 
-            modelBuilder.Entity<RecipeItem>()
-                .HasOne(recipeItem => recipeItem.Product)
-                .WithMany(product => product.RecipeItems)
-                .HasForeignKey(recipe => recipe.ProductId)
-                .IsRequired();
 
-            modelBuilder.Entity<RecipeItem>()
-               .HasOne(recipeItem => recipeItem.Recipe)
-               .WithMany(recipe => recipe.RecipeItems)
-               .HasForeignKey(recipeItem => recipeItem.RecipeId)
-               .IsRequired();
-
-
+            modelBuilder.Entity<RecipeItem>().HasKey(ri => new { ri.RecipeId, ri.ProductId });
         }
     }
 }

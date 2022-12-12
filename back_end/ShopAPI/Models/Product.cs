@@ -12,11 +12,11 @@ namespace ShopAPI.Models
         public byte[]? Picture { get; set; } = null;
         public float Price { get; set; }
         public float Discount { get; set; } = 1;
-        public int Quatity { get; set; }
+        public int Quantity { get; set; }
         public string? Description { get; set; } = null;
         public string Variety { get; set; } = null;
-        public ICollection<Color> Colors { get; set; }
-        public ICollection<Size> Sizes { get; set; }
+        public ICollection<ColorProduct> ColorProducts { get; set; }
+        public ICollection<SizeProduct> SizeProducts { get; set; }
         public ICollection<RecipeItem> RecipeItems { get; set; }
 
 
