@@ -12,7 +12,7 @@ using ShopAPI.Models;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221211071702_UpdateDatabase")]
+    [Migration("20221215044721_UpdateDatabase")]
     partial class UpdateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,6 +112,10 @@ namespace ShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ColorId"), 1L, 1);
 
+                    b.Property<string>("ColorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ColorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -178,9 +182,6 @@ namespace ShopAPI.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ColorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -196,10 +197,7 @@ namespace ShopAPI.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("Quatity")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SizeId")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<string>("Variety")
@@ -210,10 +208,6 @@ namespace ShopAPI.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CollectionId");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("SizeId");
 
                     b.ToTable("product");
                 });
@@ -232,9 +226,6 @@ namespace ShopAPI.Migrations
                     b.Property<DateTime>("RecipeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Total")
-                        .HasColumnType("real");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -247,11 +238,8 @@ namespace ShopAPI.Migrations
 
             modelBuilder.Entity("ShopAPI.Models.RecipeItem", b =>
                 {
-                    b.Property<int>("RecipeItemId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("RecipeId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeItemId"), 1L, 1);
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -259,14 +247,12 @@ namespace ShopAPI.Migrations
                     b.Property<int>("Quatity")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
-                    b.HasKey("RecipeItemId");
+                    b.HasKey("RecipeId", "ProductId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("RecipeId");
 
                     b.ToTable("recipeItem");
                 });
@@ -346,7 +332,7 @@ namespace ShopAPI.Migrations
             modelBuilder.Entity("ShopAPI.Models.ColorProduct", b =>
                 {
                     b.HasOne("ShopAPI.Models.Color", "Color")
-                        .WithMany()
+                        .WithMany("ColorProducts")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -375,14 +361,6 @@ namespace ShopAPI.Migrations
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ShopAPI.Models.Color", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ColorId");
-
-                    b.HasOne("ShopAPI.Models.Size", null)
-                        .WithMany("Products")
-                        .HasForeignKey("SizeId");
 
                     b.Navigation("Category");
 
@@ -436,7 +414,7 @@ namespace ShopAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("ShopAPI.Models.Size", "Size")
-                        .WithMany()
+                        .WithMany("SizeProducts")
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -458,7 +436,7 @@ namespace ShopAPI.Migrations
 
             modelBuilder.Entity("ShopAPI.Models.Color", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ColorProducts");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Coupon", b =>
@@ -482,7 +460,7 @@ namespace ShopAPI.Migrations
 
             modelBuilder.Entity("ShopAPI.Models.Size", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("SizeProducts");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.User", b =>

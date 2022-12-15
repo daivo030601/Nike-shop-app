@@ -8,13 +8,12 @@ namespace ShopAPI.Models
     {
         public int RecipeId { get; set; }
         public int UserId { get; set; }
-        public int RecipeItemId { get; set; }
         public int CouponId { get; set; } = 0;
         public DateTime RecipeDate { get; set; }
 
         public User User { get; set; }
         public Coupon Coupon { get; set; }
-        public ICollection<RecipeItem> RecipeItems { get; set; }
+        public List<RecipeItem> RecipeItems { get; set; }
 
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopAPI.Migrations
 {
-    public partial class InitialDatabase : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,7 +44,8 @@ namespace ShopAPI.Migrations
                 {
                     ColorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ColorName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ColorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ColorCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,7 +107,7 @@ namespace ShopAPI.Migrations
                     Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Discount = table.Column<float>(type: "real", nullable: false),
-                    Quatity = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Variety = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
@@ -163,7 +164,6 @@ namespace ShopAPI.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RecipeItemId = table.Column<int>(type: "int", nullable: false),
                     CouponId = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<float>(type: "real", nullable: false),
                     RecipeDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -184,48 +184,48 @@ namespace ShopAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ColorProducts",
+                name: "colorProduct",
                 columns: table => new
                 {
-                    ColorsColorId = table.Column<int>(type: "int", nullable: false),
-                    ProductsProductId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ColorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ColorProducts", x => new { x.ColorsColorId, x.ProductsProductId });
+                    table.PrimaryKey("PK_colorProduct", x => new { x.ColorId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_ColorProducts_color_ColorsColorId",
-                        column: x => x.ColorsColorId,
+                        name: "FK_colorProduct_color_ColorId",
+                        column: x => x.ColorId,
                         principalTable: "color",
                         principalColumn: "ColorId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ColorProducts_product_ProductsProductId",
-                        column: x => x.ProductsProductId,
+                        name: "FK_colorProduct_product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "product",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SizeProducts",
+                name: "sizeProduct",
                 columns: table => new
                 {
-                    ProductsProductId = table.Column<int>(type: "int", nullable: false),
-                    SizesSizeId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    SizeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SizeProducts", x => new { x.ProductsProductId, x.SizesSizeId });
+                    table.PrimaryKey("PK_sizeProduct", x => new { x.SizeId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_SizeProducts_product_ProductsProductId",
-                        column: x => x.ProductsProductId,
+                        name: "FK_sizeProduct_product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "product",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SizeProducts_size_SizesSizeId",
-                        column: x => x.SizesSizeId,
+                        name: "FK_sizeProduct_size_SizeId",
+                        column: x => x.SizeId,
                         principalTable: "size",
                         principalColumn: "SizeId",
                         onDelete: ReferentialAction.Cascade);
@@ -235,15 +235,14 @@ namespace ShopAPI.Migrations
                 name: "recipeItem",
                 columns: table => new
                 {
-                    RecipeItemId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     Quatity = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    Total = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_recipeItem", x => x.RecipeItemId);
+                    table.PrimaryKey("PK_recipeItem", x => new { x.RecipeId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_recipeItem_product_ProductId",
                         column: x => x.ProductId,
@@ -264,9 +263,9 @@ namespace ShopAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ColorProducts_ProductsProductId",
-                table: "ColorProducts",
-                column: "ProductsProductId");
+                name: "IX_colorProduct_ProductId",
+                table: "colorProduct",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_product_CategoryId",
@@ -289,14 +288,9 @@ namespace ShopAPI.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_recipeItem_RecipeId",
-                table: "recipeItem",
-                column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SizeProducts_SizesSizeId",
-                table: "SizeProducts",
-                column: "SizesSizeId");
+                name: "IX_sizeProduct_ProductId",
+                table: "sizeProduct",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -305,13 +299,13 @@ namespace ShopAPI.Migrations
                 name: "address");
 
             migrationBuilder.DropTable(
-                name: "ColorProducts");
+                name: "colorProduct");
 
             migrationBuilder.DropTable(
                 name: "recipeItem");
 
             migrationBuilder.DropTable(
-                name: "SizeProducts");
+                name: "sizeProduct");
 
             migrationBuilder.DropTable(
                 name: "color");

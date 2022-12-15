@@ -13,6 +13,10 @@ namespace ShopAPI.Helper
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<Product, ProductModel>().ReverseMap();
             CreateMap<Product, DetailProductModel>().ReverseMap();
+            CreateMap<Recipe, RecipeModel>().ReverseMap();
+            CreateMap<RecipeItem, RecipeItemModel>().ReverseMap();
+            CreateMap<Recipe, RecipeModelInput>().ReverseMap();
+            CreateMap<RecipeItem, RecipeItemModelInput>().ReverseMap();
         }
     }
 }

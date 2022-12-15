@@ -16,6 +16,8 @@ builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IRecipeItemRepository, RecipeItemRepository>();
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 
 
 builder.Services.AddEndpointsApiExplorer();

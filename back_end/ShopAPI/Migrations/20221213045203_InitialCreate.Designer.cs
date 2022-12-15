@@ -12,8 +12,8 @@ using ShopAPI.Models;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221212050355_UpdateDatabaseV4")]
-    partial class UpdateDatabaseV4
+    [Migration("20221213045203_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

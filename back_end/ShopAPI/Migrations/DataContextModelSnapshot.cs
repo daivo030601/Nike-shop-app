@@ -224,9 +224,6 @@ namespace ShopAPI.Migrations
                     b.Property<DateTime>("RecipeDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RecipeItemId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
