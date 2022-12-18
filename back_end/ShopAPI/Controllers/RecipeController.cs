@@ -48,7 +48,8 @@ namespace ShopAPI.Controllers
                 if(newRecipe != null)
                 {
                     type = ResponseType.Failure;
-                }    
+                }
+                newRecipe!.RecipeItemModels = new List<RecipeItemModel>();
                 foreach(var item in recipeModel!.RecipeItemModelInputs)
                 {
                     RecipeItemModel recipeItem = await _recipeItemRepository.CreateRecipeItem(item, newRecipe!.RecipeId);
