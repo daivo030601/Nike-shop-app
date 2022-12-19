@@ -6,6 +6,9 @@ namespace ShopAPI.Repositories
     {
         Task<int> InsertProduct(ProductModel productModel);
         Task<List<ProductModel>> GetProducts();
+        Task<List<ProductModel>> GetProductsByCollection(int CollectionId);
+        Task<int> DeleteProduct(int productId);
+        Task<int> UpdateProduct(ProductModel product);
         Task<DetailProductModel> GetProductById(int Id);
     }
 }

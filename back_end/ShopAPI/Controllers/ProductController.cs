@@ -77,5 +77,58 @@ namespace ShopAPI.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("api/[controller]/CollectionProduct/{CollectionId}")]
+        public async Task<IActionResult> GetProductByCollectionId(int CollectionId)
+        {
+            ResponseType type = ResponseType.Success;
+            try
+            {
+                List<ProductModel> data = await _productRepo.GetProductsByCollection(CollectionId);
+                if (data == null)
+                {
+                    type = ResponseType.NotFound;
+                }
+                return Ok(ResponseHandler.GetApiResponse(type, data));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(e));
+            }
+        }
+
+        [HttpPut]
+        [Route("api/[controller]/Product")]
+        public async Task<ActionResult> PutQuestion([FromBody] ProductModel model)
+        {
+            try
+            {
+                ResponseType type = ResponseType.Success;
+                await _productRepo.UpdateProduct(model);
+                return Ok(ResponseHandler.GetApiResponse(type, model));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
+        }
+
+        // DELETE 
+        [HttpDelete]
+        [Route("api/[controller]/Product/{id}")]
+        public async Task<ActionResult> DeleteProduct(int id)
+        {
+            try
+            {
+                ResponseType type = ResponseType.Success;
+                int result = await _productRepo.DeleteProduct(id);
+                return Ok(ResponseHandler.GetApiResponse(type, "Delete success ${result}"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
+        }
     }
 }

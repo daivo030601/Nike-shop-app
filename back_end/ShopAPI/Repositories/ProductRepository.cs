@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal;
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.Data;
 using ShopAPI.Models;
@@ -15,6 +16,28 @@ namespace ShopAPI.Repositories
             _context = context;
             _mapper = mapper;
         }
+
+        public async Task<int> DeleteProduct(int productId)
+        {
+            try
+            {
+                var product = await _context.products.Where(p => p.ProductId.Equals(productId)).FirstOrDefaultAsync();
+                if (product != null)
+                {
+                    _context.products.Remove(product);
+                    await _context.SaveChangesAsync();
+                    return product.ProductId;
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
         public async Task<DetailProductModel> GetProductById(int Id)
         {
             DetailProductModel product =  _mapper.Map<DetailProductModel>(await _context.products.Where(p => p.ProductId== Id).FirstOrDefaultAsync());
@@ -48,17 +71,125 @@ namespace ShopAPI.Repositories
             return _mapper.Map<List<ProductModel>>(products);
         }
 
+        public async Task<List<ProductModel>> GetProductsByCollection(int CollectionId)
+        {
+            var productList = await _context.products
+                .Where(p => p.CollectionId == CollectionId)
+                .ToListAsync();
+            return _mapper.Map<List<ProductModel>>(productList);
+        }
+        //Add
         public async Task<int> InsertProduct(ProductModel productModel)
         {
             var checkProduct = _context.products.FindAsync(productModel.ProductId);
             if (checkProduct.Result == null)
             {
                 var newProduct = _mapper.Map<Product>(productModel);
+                //newProduct.ColorProducts = productModel.ColorsId.Select(p => new ColorProduct(p)).ToList();
                 await _context.products.AddAsync(newProduct);
                 await _context.SaveChangesAsync();
+                await AddSizeProduct(newProduct.ProductId, productModel.SizesId);
+                await AddColorProduct(newProduct.ProductId, productModel.SizesId);
                 return 1;
             }
             return 0;
+        }
+
+        public async Task<int> UpdateProduct(ProductModel product)
+        {
+            var dbTable = await _context.products.Where(p => p.ProductId.Equals(product.ProductId)).FirstOrDefaultAsync();
+            if (dbTable != null)
+            {
+                dbTable = _mapper.Map<Product>(product);
+                await _context.SaveChangesAsync();
+                return dbTable.ProductId;
+            }
+            return 0;
+        }
+
+        public async Task AddSizeProduct(int ProductId, List<int> sizes)
+        {
+            if(ProductId != 0)
+            {
+                try
+                {
+                    foreach (var item in sizes)
+                    {
+                        var newSizeProduct = new SizeProduct(ProductId, item);
+                        await _context.sizeProducts.AddAsync(newSizeProduct);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task AddColorProduct(int ProductId, List<int> colors)
+        {
+            if (ProductId != 0)
+            {
+                try
+                {
+                    foreach (var item in colors)
+                    {
+                        var newColorProduct = new ColorProduct(ProductId, item);
+                        await _context.colorProducts.AddAsync(newColorProduct);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task UpdateSizeProduct(int ProductId, List<int> sizes)
+        {
+            var sizeProductList = await _context.sizeProducts
+                .Where(p => p.ProductId == ProductId)
+                .ToListAsync();
+            if(sizeProductList != null){
+                try
+                {
+                    _context.sizeProducts.RemoveRange(sizeProductList);
+                    foreach (var item in sizes)
+                    {
+                        var newSizeProduct = new SizeProduct(ProductId, item);
+                        await _context.sizeProducts.AddAsync(newSizeProduct);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task UpdateColorProduct(int ProductId, List<int> colors)
+        {
+            var colorProductList = await _context.colorProducts
+                .Where(p => p.ProductId == ProductId)
+                .ToListAsync();
+            if (colorProductList != null)
+            {
+                try
+                {
+                    _context.colorProducts.RemoveRange(colorProductList);
+                    foreach (var item in colors)
+                    {
+                        var newColorProduct = new ColorProduct(ProductId, item);
+                        await _context.colorProducts.AddAsync(newColorProduct);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
         }
     }
 }
