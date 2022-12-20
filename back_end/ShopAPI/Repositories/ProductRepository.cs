@@ -89,22 +89,30 @@ namespace ShopAPI.Repositories
                 await _context.products.AddAsync(newProduct);
                 await _context.SaveChangesAsync();
                 await AddSizeProduct(newProduct.ProductId, productModel.SizesId);
-                await AddColorProduct(newProduct.ProductId, productModel.SizesId);
+                await AddColorProduct(newProduct.ProductId, productModel.ColorsId);
                 return 1;
             }
             return 0;
         }
 
-        public async Task<int> UpdateProduct(ProductModel product)
+        public async Task UpdateProduct(ProductModel product)
         {
             var dbTable = await _context.products.Where(p => p.ProductId.Equals(product.ProductId)).FirstOrDefaultAsync();
             if (dbTable != null)
             {
-                dbTable = _mapper.Map<Product>(product);
-                await _context.SaveChangesAsync();
-                return dbTable.ProductId;
+                dbTable.Name = String.IsNullOrEmpty(product.Name) ? dbTable.Name : product.Name;
+                dbTable.Price = product.Price == null ? dbTable.Price : product.Price;
+                dbTable.Discount = product.Discount == null ? dbTable.Discount : product.Discount;
+                dbTable.Quantity = product.Quantity == null ? dbTable.Quantity : product.Quantity;
+                dbTable.Variety = String.IsNullOrEmpty(product.Variety) ? dbTable.Variety : product.Variety;
+                dbTable.Description = String.IsNullOrEmpty(product.Description) ? dbTable.Description : product.Description;
+                dbTable.CollectionId = product.CollectionId == null ? dbTable.CollectionId : product.CollectionId;
+                dbTable.CategoryId = product.CategoryId == null ? dbTable.CategoryId : product.CategoryId;
+                await UpdateSizeProduct(product.ProductId, product.SizesId);
+                await UpdateColorProduct(product.ProductId, product.ColorsId);
+                //await _context.SaveChangesAsync();
             }
-            return 0;
+            await _context.SaveChangesAsync();
         }
 
         public async Task AddSizeProduct(int ProductId, List<int> sizes)
@@ -160,6 +168,8 @@ namespace ShopAPI.Repositories
                     {
                         var newSizeProduct = new SizeProduct(ProductId, item);
                         await _context.sizeProducts.AddAsync(newSizeProduct);
+                        await _context.SaveChangesAsync();
+
                     }
                 }
                 catch (Exception)
@@ -183,6 +193,8 @@ namespace ShopAPI.Repositories
                     {
                         var newColorProduct = new ColorProduct(ProductId, item);
                         await _context.colorProducts.AddAsync(newColorProduct);
+                        await _context.SaveChangesAsync();
+
                     }
                 }
                 catch (Exception)

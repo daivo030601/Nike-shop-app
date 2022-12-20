@@ -100,7 +100,7 @@ namespace ShopAPI.Controllers
 
         [HttpPut]
         [Route("api/[controller]/Product")]
-        public async Task<ActionResult> PutQuestion([FromBody] ProductModel model)
+        public async Task<ActionResult> UpdateProduct([FromBody] ProductModel model)
         {
             try
             {
