@@ -5,6 +5,11 @@ namespace ShopAPI.Models
     [Table("colorProduct")]
     public class ColorProduct
     {
+        public ColorProduct( int ProductId, int ColorId)
+        {
+            this.ProductId = ProductId;
+            this.ColorId = ColorId;
+        }
         public int ProductId { get; set; }
         public Product Product { get; set; }
 

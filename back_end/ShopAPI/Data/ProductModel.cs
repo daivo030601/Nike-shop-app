@@ -1,4 +1,6 @@
-﻿namespace ShopAPI.Data
+﻿using ShopAPI.Models;
+
+namespace ShopAPI.Data
 {
     public class ProductModel
     {
@@ -10,8 +12,8 @@
         public int Quantity { get; set; }
         public string? Description { get; set; } = null;
         public string? Variety { get; set; } = null;
-        public int[]? ColorId { get; set; }
-        public int[]? SizeId { get; set; }
+        public List<int> ColorsId { get; set; }
+        public List<int> SizesId { get; set; }
         public int? CollectionId { get; set; }
         public int? CategoryId { get; set; }
     }

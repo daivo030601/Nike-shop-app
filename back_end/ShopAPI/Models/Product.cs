@@ -11,7 +11,7 @@ namespace ShopAPI.Models
         public string Name { get; set; } = null;
         public byte[]? Picture { get; set; } = null;
         public float Price { get; set; }
-        public float Discount { get; set; } = 1;
+        public float? Discount { get; set; } = 1;
         public int Quantity { get; set; }
         public string? Description { get; set; } = null;
         public string Variety { get; set; } = null;

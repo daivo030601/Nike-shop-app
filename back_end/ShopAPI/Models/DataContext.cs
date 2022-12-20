@@ -34,6 +34,8 @@ namespace ShopAPI.Models
             modelBuilder.Entity<User>().HasKey(x => x.UserId);
             modelBuilder.Entity<Recipe>().HasKey(x => x.RecipeId);
             modelBuilder.Entity<Category>().HasKey(x => x.CategoryId);
+            modelBuilder.Entity<ColorProduct>().HasKey(sc => new { sc.ColorId, sc.ProductId });
+            modelBuilder.Entity<SizeProduct>().HasKey(sc => new { sc.SizeId, sc.ProductId });
 
             modelBuilder.Entity<Address>(e =>
             {
@@ -97,9 +99,33 @@ namespace ShopAPI.Models
                 .HasForeignKey(product => product.CollectionId)
                 .IsRequired();
 
-            modelBuilder.Entity<ColorProduct>().HasKey(sc => new { sc.ColorId, sc.ProductId });
+            modelBuilder.Entity<ColorProduct>()
+                .HasOne(cp => cp.Product)
+                .WithMany(p => p.ColorProducts)
+                .HasForeignKey(cp => cp.ProductId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<SizeProduct>().HasKey(sc => new { sc.SizeId, sc.ProductId });
+            modelBuilder.Entity<ColorProduct>()
+               .HasOne(cp => cp.Color)
+               .WithMany(p => p.ColorProducts)
+               .HasForeignKey(cp => cp.ColorId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SizeProduct>()
+                .HasOne(sp => sp.Product)
+                .WithMany(p => p.SizeProducts)
+                .HasForeignKey(sp => sp.ProductId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SizeProduct>()
+               .HasOne(sp => sp.Size)
+               .WithMany(p => p.SizeProducts)
+               .HasForeignKey(sp => sp.SizeId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<Address>()
