@@ -73,7 +73,9 @@ const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard, selecte
       </View>
       <TouchableOpacity
         style={styles.nextBtn}
-        onPress={() =>
+        onPress={() =>{
+
+          console.log(props)
           props.checkout(
             {
               cart,
@@ -82,7 +84,7 @@ const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard, selecte
               total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
             },
             () => navigation.navigate("CheckoutResult")
-          )
+          )}
         }
       >
         <Text style={styles.nextBtnText}>Pay Now</Text>

@@ -1,4 +1,5 @@
 import { createAction } from "redux-actions";
+import React, { useRef } from "react";
 import * as type from "./type";
 import * as firebase from "firebase";
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -42,9 +43,11 @@ export const getProfileSuccess = createAction(type.GET_PROFILE);
 
 export const checkout = (data, callback) => {
   return (dispatch) => {
+    
     dispatch(setLoading("Checking out"));
     try {
       const user = firebase.auth().currentUser;
+      console.log('data', user)
       let uid;
       if (user != null) {
         uid = user.uid;
@@ -74,6 +77,7 @@ export const checkout = (data, callback) => {
           dispatch(setLoading(""));
         })
         .catch((err) => {
+          console.error('loi ',err);
           dispatch(setLoading(""));
           showMessage({
             message: "Checkout Failed",
@@ -87,6 +91,7 @@ export const checkout = (data, callback) => {
           });
         });
     } catch {
+      console.error('loi 2 ',err);
       dispatch(setLoading(""));
       showMessage({
         message: "Checkout Failed",

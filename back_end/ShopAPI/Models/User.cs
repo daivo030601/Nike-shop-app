@@ -13,7 +13,6 @@ namespace ShopAPI.Models
         public string PhoneNumber { get; set; } = null;
 
         public ICollection<Recipe> Recipes { get; set; } 
-        public ICollection<Address> Addresses { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
 const addresses = [
   {
-    id: 1,
+    addressId: 1,
     name: "Vo Thoi Dai",
     city: "Ha Noi",
     district: "Dong Da",
@@ -9,7 +9,7 @@ const addresses = [
     pin: "887211",
   },
   {
-    id: 2,
+    addressId: 2,
     name: "Thoi Dai",
     city: "Dong Nai",
     district: "Xuan Loc",
