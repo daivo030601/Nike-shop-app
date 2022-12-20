@@ -74,7 +74,7 @@ namespace ShopAPI.Repositories
             }
             catch (Exception)
             {
-                throw(Exception);
+                throw;
             }
             
         }

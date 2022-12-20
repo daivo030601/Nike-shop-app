@@ -18,12 +18,12 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAddresses()
+        public async Task<IActionResult> GetAllAddresses(int userId)
         {
             ResponseType type = ResponseType.Success;
             try
             {
-                List<AddressModel> data = await _addressRepo.GetAddress();
+                List<AddressModel> data = await _addressRepo.GetAddress(userId);
                 if (data == null)
                 {
                     type = ResponseType.NotFound;
