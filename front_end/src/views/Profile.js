@@ -45,17 +45,23 @@ function Profile({ user, navigation, ...props }) {
           <Text style={styles.buttonText}>My orders</Text>
           <Image source={require("../images/right-arrow.png")} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("PaymentMethod")}
+          style={styles.button}>
           <Image source={require("../images/card.png")} />
           <Text style={styles.buttonText}>Card & Wallet</Text>
           <Image source={require("../images/right-arrow.png")} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate("Address")}
+          style={styles.button}>
           <Image source={require("../images/address.png")} />
           <Text style={styles.buttonText}>Address</Text>
           <Image source={require("../images/right-arrow.png")} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("BookMark")} 
+          style={styles.button}>
           <Image source={require("../images/wish.png")} />
           <Text style={styles.buttonText}>Wishlist</Text>
           <Image source={require("../images/right-arrow.png")} />
