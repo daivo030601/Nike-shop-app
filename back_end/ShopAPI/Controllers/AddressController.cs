@@ -6,7 +6,6 @@ using ShopAPI.Response;
 
 namespace ShopAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class AddressController : ControllerBase
     {
@@ -18,12 +17,13 @@ namespace ShopAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAddresses()
+        [Route("api/[controller]/Addresses/{userId}")]
+        public async Task<IActionResult> GetAllAddresses(string userId)
         {
             ResponseType type = ResponseType.Success;
             try
             {
-                List<AddressModel> data = await _addressRepo.GetAddress();
+                List<AddressModel> data = await _addressRepo.GetAddress(userId);
                 if (data == null)
                 {
                     type = ResponseType.NotFound;
@@ -37,6 +37,7 @@ namespace ShopAPI.Controllers
         }
 
         [HttpPost]
+        [Route("api/[controller]/Address")]
         public async Task<IActionResult> AddAddress(AddressModel model)
         {
             try
@@ -50,6 +51,39 @@ namespace ShopAPI.Controllers
                 return BadRequest(ResponseHandler.GetExceptionResponse(e));
             }
 
+        }
+
+        [HttpPut]
+        [Route("api/[controller]/Address")]
+        public async Task<ActionResult> UpdateAddress([FromBody] AddressModel model)
+        {
+            try
+            {
+                ResponseType type = ResponseType.Success;
+                await _addressRepo.UpdateAddress(model);
+                return Ok(ResponseHandler.GetApiResponse(type, model));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
+        }
+
+        // DELETE 
+        [HttpDelete]
+        [Route("api/[controller]/Address/{id}")]
+        public async Task<ActionResult> DeleteAddress(int id)
+        {
+            try
+            {
+                ResponseType type = ResponseType.Success;
+                int result = await _addressRepo.DeleteAddress(id);
+                return Ok(ResponseHandler.GetApiResponse(type, "Delete success "));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+            }
         }
     }
 }

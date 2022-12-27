@@ -1,4 +1,5 @@
 import { createAction } from "redux-actions";
+import React, { useRef } from "react";
 import * as type from "./type";
 import * as firebase from "firebase";
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -24,6 +25,7 @@ export const addCart = createAction(type.ADD_CART);
 export const removeCart = createAction(type.REMOVE_CART);
 export const clearCart = createAction(type.CLEAR_CART);
 export const setAddress = createAction(type.SET_ADDRESS);
+export const getAddress = createAction(type.GET_ADDRESS);
 export const addAddress = createAction(type.ADD_ADDRESS);
 export const setCoupon = createAction(type.SET_COUPON);
 export const loginSuccess = createAction(type.LOGIN);
@@ -45,6 +47,7 @@ export const checkout = (data, callback) => {
     dispatch(setLoading("Checking out"));
     try {
       const user = firebase.auth().currentUser;
+      console.log('data', user)
       let uid;
       if (user != null) {
         uid = user.uid;
@@ -54,7 +57,6 @@ export const checkout = (data, callback) => {
         .filter((item) => item.number > 0 == true);
       const deal = data.selectedCoupon ? data.selectedCoupon.cost : 0;
       const address = data.selectedAddress;
-
       var cartList = firebase.database().ref("/");
       var newCartRef = cartList.push();
       newCartRef
@@ -74,6 +76,7 @@ export const checkout = (data, callback) => {
           dispatch(setLoading(""));
         })
         .catch((err) => {
+          console.error('loi ',err);
           dispatch(setLoading(""));
           showMessage({
             message: "Checkout Failed",
@@ -86,7 +89,8 @@ export const checkout = (data, callback) => {
             },
           });
         });
-    } catch {
+    } catch(err) {
+      console.error('loi 2 ',err);
       dispatch(setLoading(""));
       showMessage({
         message: "Checkout Failed",
@@ -204,6 +208,8 @@ export const getMyCart = () => {
     dispatch(setLoading(""));
   };
 };
+
+
 
 export const editProfile = (profile) => {
   return (dispatch) => {

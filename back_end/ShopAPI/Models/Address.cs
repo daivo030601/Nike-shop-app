@@ -5,15 +5,14 @@ namespace ShopAPI.Models
     [Table("address")]
     public class Address
     {
-        public int AddressId { get; set; }
-        public string UserName { get; set; } = null;
-        public string City { get; set; } = null;
-        public string District { get; set; } = null;
-        public string AddressName { get; set; } = null;
-        public string Phone { get; set; } = null;
-        public string Pin{ get; set; } = null;
+        public int id { get; set; }
+        public string city { get; set; } = null;
+        public string district { get; set; } = null;
+        public string address { get; set; } = null;
+        public string name { get; set; } = null;
+        public string phone { get; set; } = null;
+        public string pin{ get; set; } = null;
 
-        public int? UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
     }
 }

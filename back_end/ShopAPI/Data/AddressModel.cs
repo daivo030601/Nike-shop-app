@@ -2,14 +2,14 @@
 {
     public class AddressModel
     {
-        public int AddressId { get; set; }
-        public string? UserName { get; set; }
-        public string? City { get; set; }
-        public string? District { get; set; } 
-        public string? AddressName { get; set; } 
-        public string? Phone { get; set; }
-        public string? Pin { get; set; }
+        public int id { get; set; }
+        public string city { get; set; } = null;
+        public string district { get; set; } = null;
+        public string address { get; set; } = null;
+        public string name { get; set; } = null;
+        public string phone { get; set; } = null;
+        public string pin { get; set; } = null;
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

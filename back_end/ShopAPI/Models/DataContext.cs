@@ -30,7 +30,7 @@ namespace ShopAPI.Models
             modelBuilder.Entity<Coupon>().HasKey(x => x.CouponId);
             modelBuilder.Entity<Color>().HasKey(x => x.ColorId);
             modelBuilder.Entity<Size>().HasKey(x => x.SizeId);
-            modelBuilder.Entity<Address>().HasKey(x => x.AddressId);
+            modelBuilder.Entity<Address>().HasKey(x => x.id);
             modelBuilder.Entity<User>().HasKey(x => x.UserId);
             modelBuilder.Entity<Recipe>().HasKey(x => x.RecipeId);
             modelBuilder.Entity<Category>().HasKey(x => x.CategoryId);
@@ -39,10 +39,10 @@ namespace ShopAPI.Models
 
             modelBuilder.Entity<Address>(e =>
             {
-                e.Property(en => en.UserName).IsRequired(false);
-                e.Property(en => en.Pin).IsRequired(false);
-                e.Property(en => en.District).IsRequired(false);
-                e.Property(en => en.City).IsRequired(false);
+                e.Property(en => en.name).IsRequired(false);
+                e.Property(en => en.pin).IsRequired(false);
+                e.Property(en => en.district).IsRequired(false);
+                e.Property(en => en.city).IsRequired(false);
 
             });
 
@@ -128,10 +128,7 @@ namespace ShopAPI.Models
                .OnDelete(DeleteBehavior.Cascade);
 
 
-            modelBuilder.Entity<Address>()
-                .HasOne(address => address.User)
-                .WithMany(user => user.Addresses)
-                .HasForeignKey(address => address.UserId);
+            
 
             modelBuilder.Entity<Recipe>()
                 .HasOne(recipe => recipe.User)

@@ -1,14 +1,13 @@
 import { handleActions } from "redux-actions";
 import * as type from "../type";
-import addresses from "../../data/address";
 import users from "../../data/users";
 
 const initialState = {
   count: 0,
   isLoading: false,
   loadingText: "Loging in",
-  selectedAddress: addresses[0],
-  addresses,
+  selectedAddress: {},
+  addresses: [],
   selectedCoupon: "",
   isLogin: false,
   user: "",
@@ -52,6 +51,13 @@ const reducer = handleActions(
       return {
         ...state,
         addresses: [...state.addresses, action.payload],
+      };
+    },
+    [type.GET_ADDRESS]: (state, action) => {
+      console.log('GET_ADDRESS',action.payload)
+      return {
+        ...state,
+        addresses: [action.payload],
       };
     },
     [type.SET_COUPON]: (state, action) => {
