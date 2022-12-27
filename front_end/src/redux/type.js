@@ -6,6 +6,7 @@ export const REMOVE_CART = "remove_cart";
 export const CLEAR_CART = "clear_cart";
 export const SET_ADDRESS = "set_address";
 export const ADD_ADDRESS = "add_address";
+export const GET_ADDRESS = "get_address";
 export const SET_COUPON = "set_coupon";
 export const LOGIN = "login";
 export const ADD_HISTORY = "add_history";

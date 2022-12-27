@@ -25,6 +25,7 @@ export const addCart = createAction(type.ADD_CART);
 export const removeCart = createAction(type.REMOVE_CART);
 export const clearCart = createAction(type.CLEAR_CART);
 export const setAddress = createAction(type.SET_ADDRESS);
+export const getAddress = createAction(type.GET_ADDRESS);
 export const addAddress = createAction(type.ADD_ADDRESS);
 export const setCoupon = createAction(type.SET_COUPON);
 export const loginSuccess = createAction(type.LOGIN);
@@ -43,7 +44,6 @@ export const getProfileSuccess = createAction(type.GET_PROFILE);
 
 export const checkout = (data, callback) => {
   return (dispatch) => {
-    
     dispatch(setLoading("Checking out"));
     try {
       const user = firebase.auth().currentUser;
@@ -57,7 +57,6 @@ export const checkout = (data, callback) => {
         .filter((item) => item.number > 0 == true);
       const deal = data.selectedCoupon ? data.selectedCoupon.cost : 0;
       const address = data.selectedAddress;
-
       var cartList = firebase.database().ref("/");
       var newCartRef = cartList.push();
       newCartRef
@@ -90,7 +89,7 @@ export const checkout = (data, callback) => {
             },
           });
         });
-    } catch {
+    } catch(err) {
       console.error('loi 2 ',err);
       dispatch(setLoading(""));
       showMessage({
@@ -209,6 +208,8 @@ export const getMyCart = () => {
     dispatch(setLoading(""));
   };
 };
+
+
 
 export const editProfile = (profile) => {
   return (dispatch) => {

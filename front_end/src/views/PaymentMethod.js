@@ -74,7 +74,6 @@ const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard, selecte
       <TouchableOpacity
         style={styles.nextBtn}
         onPress={() =>{
-
           console.log(props)
           props.checkout(
             {

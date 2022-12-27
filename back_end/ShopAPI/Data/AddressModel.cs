@@ -10,6 +10,6 @@
         public string phone { get; set; } = null;
         public string pin { get; set; } = null;
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

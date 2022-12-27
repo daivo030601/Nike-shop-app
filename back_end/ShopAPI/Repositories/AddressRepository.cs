@@ -36,7 +36,7 @@ namespace ShopAPI.Repositories
             }
         }
 
-        public async Task<List<AddressModel>> GetAddress(int userId)
+        public async Task<List<AddressModel>> GetAddress(string userId)
         {
             var addresses = await _context.addresses!.Where(a => a.UserId.Equals(userId)).ToListAsync();
             return _mapper.Map<List<AddressModel>>(addresses);

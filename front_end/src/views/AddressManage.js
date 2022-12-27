@@ -1,29 +1,79 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView } from "react-native";
 import Constants from "expo-constants";
+import * as firebase from "firebase";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import Backbutton from "../component/BackButton";
-import { setAddress } from "../redux/index";
+import { setAddress, getAddress } from "../redux/index";
 import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
 const AddressManage = ({ navigation, ...props }) => {
   const { selectedAddress } = props;
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  const getAddress = async () => {
+    try {
+      const user = firebase.auth().currentUser;
+      let uid = user.uid;
+      const response = await fetch(`https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Addresses/${uid}`);
+      const json = await response.json();
+      setData(json.responseData);
+    } catch (error) {
+      console.error(error);
+    } 
+  }
+
+  const deleteAddress = async (id) => {
+    try {
+      console.log(`Delete`, id)
+      await fetch(`https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Address/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+          },
+        })
+        .then((response) => response.json())
+        .then((responseJson) => { console.log("response: " + JSON.stringify(responseJson));
+        if(responseJson.message == 'Success')
+        { 
+          console.log("here");
+          getAddress()
+        }
+        else 
+        {
+          console.log(responseJson);
+        }
+        }).catch((error) => {
+            console.error(error);
+        })} catch (error) {
+      console.error(error);
+    } 
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAddress();
+    });
+    return unsubscribe;
+  },[navigation]);
+
 
   return (
     <View style={[StyleSheet.absoluteFill, styles.home]}>
       <View style={{ paddingBottom: 50 }}>
-        <ScrollView>
+        <ScrollView> 
           <View style={styles.navbar}>
             <Backbutton />
           </View>
           <Text style={styles.pageTitle}>Shipping Address</Text>
-          {props.addresses.map((item, index) => (
+          {data.map((item, index) => (
             <TouchableOpacity style={styles.address} key={`address_${index}`} onPress={() => props.setAddress(item)}>
-              <TouchableOpacity style={styles.addressCancel}>
+              <TouchableOpacity style={styles.addressCancel} onPress={() => deleteAddress(item.id)}>
                 <Image source={require("../images/cancel.png")} />
               </TouchableOpacity>
               <View style={styles.addressDetail}>
@@ -35,12 +85,10 @@ const AddressManage = ({ navigation, ...props }) => {
                 <View>
                   <Text style={styles.addressName}>{item.name}</Text>
                   <Text style={styles.addressText}>{item.city}</Text>
-                  <Text style={styles.addressText}>{item.district}</Text>
                   <Text style={styles.addressText}>{item.address}</Text>
-                  <Text style={styles.addressText}>{item.pin}</Text>
                   <Text style={styles.addressText}>Mobile: {item.phone} </Text>
                 </View>
-                <TouchableOpacity style={styles.addressEditBtn}>
+                <TouchableOpacity style={styles.addressEditBtn} onPress={() => navigation.navigate("AddressEdit",item)}>
                   <Text style={styles.addressEditBtnText}>EDIT</Text>
                 </TouchableOpacity>
               </View>
@@ -141,7 +189,7 @@ const styles = StyleSheet.create({
     color: "#282C408C",
     fontSize: 16,
     lineHeight: 25,
-    width: "70%",
+    width: "80%",
   },
   addressName: {
     color: "#282C40",
