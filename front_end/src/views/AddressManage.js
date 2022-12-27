@@ -20,7 +20,7 @@ const AddressManage = ({ navigation, ...props }) => {
     try {
       const user = firebase.auth().currentUser;
       let uid = user.uid;
-      const response = await fetch(`https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Addresses/${uid}`);
+      const response = await fetch(`https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Addresses/${uid}`);
       const json = await response.json();
       setData(json.responseData);
     } catch (error) {
@@ -31,7 +31,7 @@ const AddressManage = ({ navigation, ...props }) => {
   const deleteAddress = async (id) => {
     try {
       console.log(`Delete`, id)
-      await fetch(`https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Address/${id}`, {
+      await fetch(`https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Address/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-type': 'application/json; charset=UTF-8' // Indicates the content 

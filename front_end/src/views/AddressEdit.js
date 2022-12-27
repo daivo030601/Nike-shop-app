@@ -47,7 +47,7 @@ const AddressEdit = ({ navigation,route, ...props }) => {
       const user = firebase.auth().currentUser;
       let uid = user.uid;
       //console.log("adding", {...address, "userId": uid})
-      await fetch('https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Address', {
+      await fetch('https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Address', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -65,7 +65,7 @@ const AddressEdit = ({ navigation,route, ...props }) => {
 
   const updateAddress = async (address) => {
     try {
-      await fetch('https://8120-2402-800-63b9-c518-2540-25e3-6835-92f9.ap.ngrok.io/api/Address/Address', {
+      await fetch('https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Address', {
         method: 'PUT',
         headers: {
           Accept: 'application/json',

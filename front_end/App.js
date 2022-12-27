@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { PersistGate } from "redux-persist/integration/react";
+import { LogBox } from "react-native";
 
 import Home from "./src/views/Home";
 import Detail from "./src/views/Detail";
@@ -31,6 +32,7 @@ import * as actions from "./src/redux/index";
 import FlashMessage from "react-native-flash-message";
 import MyOrder from "./src/views/MyOrder";
 import EditProfile from "./src/views/EditProfile";
+import BookMarkTab from "./src/component/BookMarkTab";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -40,7 +42,9 @@ export default class Wrap extends React.Component {
     isLoaded: false,
   };
 
-  async componentDidMount() {}
+  async componentDidMount() {
+    LogBox.ignoreAllLogs();
+  }
   render() {
     return (
       <Provider store={store}>
@@ -54,6 +58,7 @@ export default class Wrap extends React.Component {
 }
 
 class App extends React.Component {
+  
   state = {
     isLoaded: false,
   };
@@ -181,6 +186,7 @@ const Navigator = ({ isViewIntroduce }) => {
       <Stack.Screen name="Introduce" component={Introduce} />
       <Stack.Screen name="MyOrder" component={MyOrder} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="BookMark" component={BookMarkTab} />
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}
