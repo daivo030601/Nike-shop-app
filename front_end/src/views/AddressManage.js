@@ -6,6 +6,7 @@ import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import Backbutton from "../component/BackButton";
+import api from "../const/api";
 import { setAddress, getAddress } from "../redux/index";
 import { connect } from "react-redux";
 
@@ -18,9 +19,9 @@ const AddressManage = ({ navigation, ...props }) => {
 
   const getAddress = async () => {
     try {
-      const user = firebase.auth().currentUser;
+      const user = await firebase.auth().currentUser;
       let uid = user.uid;
-      const response = await fetch(`https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Addresses/${uid}`);
+      const response = await fetch(`${api}/api/Address/Addresses/${uid}`);
       const json = await response.json();
       setData(json.responseData);
     } catch (error) {
@@ -31,7 +32,7 @@ const AddressManage = ({ navigation, ...props }) => {
   const deleteAddress = async (id) => {
     try {
       console.log(`Delete`, id)
-      await fetch(`https://e99f-203-205-32-219.ap.ngrok.io/api/Address/Address/${id}`, {
+      await fetch(`${api}/api/Address/Address/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
