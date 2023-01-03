@@ -139,6 +139,7 @@ export const login = ({ username, password, callback }) => {
         callback();
       })
       .catch((error) => {
+        console.error(error)
         dispatch(setLoading(""));
         showMessage({
           message: "Login Failed",
